@@ -28,6 +28,7 @@ help:
 ## setup the project for exection
 init:
 	cp config.yaml.example config.yaml
+	go get ./...
 
 ## generate the binary
 build:
