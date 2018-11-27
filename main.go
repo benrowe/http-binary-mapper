@@ -15,6 +15,18 @@ func main() {
 	startServer()
 }
 
+// Config
+type Config struct {
+	Maps []Map `mapstructure:"maps"`
+}
+
+// Map
+type Map struct {
+	ID string `mapstructure:"id"`
+}
+
+var config Config
+
 func loadConfig() {
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
@@ -27,7 +39,10 @@ func loadConfig() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("Config file changed:", e.Name)
+		viper.Unmarshal(&config)
 	})
+	viper.Unmarshal(&config)
+	fmt.Println("config read")
 }
 
 func startServer() {
