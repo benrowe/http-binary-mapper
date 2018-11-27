@@ -48,6 +48,5 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	name := params["slug"]
 	fmt.Println("incoming request: ", name)
-	viper.UnmarshalKey()
 	w.Write([]byte("test"))
 }
