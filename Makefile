@@ -27,7 +27,7 @@ help:
 
 ## setup the project for exection
 init:
-	cp config.json.example config.json
+	cp config.yaml.example config.yaml
 
 ## generate the binary
 build:
