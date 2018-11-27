@@ -62,6 +62,17 @@ func startServer() {
 func handleMap(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	name := params["slug"]
+	found := false
+
 	fmt.Println("incoming request: ", name)
-	w.Write([]byte("test"))
+
+	for _, element := range config.Maps {
+		if element.ID == name {
+			found = true
+		}
+	}
+	if found == false {
+		fmt.Println("rejected: ", name)
+		w.WriteHeader(http.StatusNotFound)
+	}
 }
