@@ -27,7 +27,7 @@ help:
   
 ## example
 init:
-	@echo "target-name"
+	cp config.json.example config.json
 
 ## generate the binary
 build:
