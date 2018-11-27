@@ -26,5 +26,9 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
   
 ## example
-target-name:
+init:
 	@echo "target-name"
+
+## generate the binary
+build:
+	go build -o proxy
