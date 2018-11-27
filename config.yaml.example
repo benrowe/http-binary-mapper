@@ -1,3 +1,13 @@
-{
-    
-}
+# application config
+config:
+  http:
+    port: 8080
+  log:
+    file: output.log
+# unique http endpoints
+maps:
+  - id: sluggable-endpoint #http://localhost:8080/sluggable-endpont?token={token}
+    token: 3D1DB59B1FFB61CC28D89633C035D3DD802836110896EE04A9A8A28107D50E5C
+    binaries:
+      - name: "for logging"
+        handler: ./bin/somethng
