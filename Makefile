@@ -24,11 +24,15 @@ help:
 		} \
 	} \
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
-  
-## example
+
+## setup the project for exection
 init:
 	cp config.json.example config.json
 
 ## generate the binary
 build:
 	go build -o proxy
+
+## execute the program from the source files
+run:
+	go run main.go
