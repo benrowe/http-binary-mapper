@@ -15,5 +15,8 @@ This package was specifically designed for creating webhook callbacks from servi
 
 _Feature coming soon_
 
+## Todo
 
-
+- handle concurrent bin execution
+- map request to bin args
+- handle output
