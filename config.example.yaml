@@ -10,4 +10,4 @@ maps:
       - name: "for logging"
         request:
           - GET:keyName: key
-        handler: ./bin/something {--keyName=}
+        handler: ./bin/something {--key=}
