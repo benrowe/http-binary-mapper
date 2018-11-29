@@ -18,6 +18,7 @@ import (
 var port *int
 var outputFile *string
 var configFile *string
+var file *os.File
 
 func prepareFlags() {
 	port = flag.Int("port", 8000, "port to run http service on")
@@ -32,7 +33,6 @@ func prepareLogger(output string) {
 		panic(err)
 	}
 
-	defer file.Close()
 	// send log to file and stdout
 	mw := io.MultiWriter(os.Stdout, file)
 	log.SetOutput(mw)
@@ -40,8 +40,14 @@ func prepareLogger(output string) {
 
 func main() {
 
+	// prepare app for booting
 	prepareFlags()
 	prepareLogger(*outputFile)
+
+	defer log.Println("Service: Shutting Down")
+	defer log.Println("------")
+	defer file.Close()
+	log.Println("Service: Starting")
 
 	loadConfig()
 	startServer()
