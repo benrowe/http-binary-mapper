@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -24,13 +25,14 @@ func main() {
 	configFile = flag.String("cfg", "mappings.yaml", "config file")
 	flag.Parse()
 
-	file, err := os.OpenFile(*outputFile, os.O_CREATE|os.O_APPEND, 0644)
+	file, err := os.OpenFile(*outputFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		panic(err)
 	}
 
 	defer file.Close()
-	log.SetOutput(file)
+	mw := io.MultiWriter(os.Stdout, file)
+	log.SetOutput(mw)
 
 	loadConfig()
 	startServer()
