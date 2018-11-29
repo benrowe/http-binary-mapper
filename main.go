@@ -15,10 +15,15 @@ import (
 )
 
 var port *int
+var outputFile *string
+var configFile *string
 
 func main() {
 	port = flag.Int("port", 8000, "port to run http service on")
-	outputFile := flag.String("output", "output.log", "file to log output to")
+	outputFile = flag.String("output", "output.log", "file to log output to")
+	configFile = flag.String("cfg", "mappings.yaml", "config file")
+	flag.Parse()
+
 	file, err := os.OpenFile(*outputFile, os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		panic(err)
@@ -55,10 +60,8 @@ func (m Map) isValid(token string) bool {
 var config Config
 
 func loadConfig() {
-	viper.SetConfigFile(*flag.String("cfg", "config.yaml", "config file name"))
-	// viper.SetConfigName("config")
+	viper.SetConfigFile(*configFile)
 	viper.AddConfigPath(".")
-	// viper.SetConfigType("yaml")
 
 	err := viper.ReadInConfig()
 	if err != nil {
