@@ -27,7 +27,7 @@ help:
 
 ## setup the project for exection
 init:
-	cp config.yaml.example config.yaml
+	cp config.example.yaml mappings.yaml
 	go get ./...
 
 ## generate the binary
@@ -36,4 +36,4 @@ build:
 
 ## execute the program from the source files
 run:
-	go run main.go -cfg config.yaml.sample
+	go run main.go -cfg=config.example.yaml
