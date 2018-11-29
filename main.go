@@ -14,18 +14,18 @@ import (
 	"github.com/spf13/viper"
 )
 
-var port int
+var port *int
 
 func main() {
-	port := flag.Int("port", 8000, "port to run http service on")
-	file, err := os.OpenFile("output.log", os.O_CREATE|os.O_APPEND, 0644)
+	port = flag.Int("port", 8000, "port to run http service on")
+	outputFile := flag.String("output", "output.log", "file to log output to")
+	file, err := os.OpenFile(*outputFile, os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		panic(err)
 	}
 
 	defer file.Close()
 	log.SetOutput(file)
-	log.Println("sdf")
 
 	loadConfig()
 	startServer()
@@ -55,9 +55,10 @@ func (m Map) isValid(token string) bool {
 var config Config
 
 func loadConfig() {
-	viper.SetConfigName("config")
+	viper.SetConfigFile(*flag.String("cfg", "config.yaml", "config file name"))
+	// viper.SetConfigName("config")
 	viper.AddConfigPath(".")
-	viper.SetConfigType("yaml")
+	// viper.SetConfigType("yaml")
 
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -80,9 +81,9 @@ func startServer() {
 
 	http.Handle("/", rtr)
 
-	portString := ":" + strconv.Itoa(port)
+	portString := ":" + strconv.Itoa(*port)
 
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	if err := http.ListenAndServe(portString, nil); err != nil {
 		panic(err)
 	}
 }
