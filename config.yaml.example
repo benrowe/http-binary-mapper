@@ -1,7 +1,5 @@
 # application config
 config:
-  http:
-    port: 8080
   log:
     file: output.log
 # unique http endpoints
