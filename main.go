@@ -111,7 +111,7 @@ func loadConfig() {
 }
 
 func startServer() {
-	log.Println("Server: booting on port", port)
+	log.Println("Server: booting on port", strconv.Itoa(*port))
 
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/{slug}", handleMap).Methods("GET")
@@ -129,7 +129,7 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	name := params["slug"]
 
-	log.Println("Request: handling: ", name)
+	log.Printf("Request: handling: /%s\n", name)
 	m := findMap(name, config.Maps)
 	if len(m.ID) > 0 {
 		token, ok := r.URL.Query()["token"]
@@ -138,18 +138,24 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 				// call binaries
 				for _, bin := range m.Binaries {
 					log.Println(bin.Name)
-					exe := exec.Command(bin.Handler)
-					err := exe.Run()
-					log.Println(err)
+					cmd, err := bin.buildCommand(r)
+					if err != nil {
+						log.Println("cant build command")
+					}
+					exe := exec.Command(cmd)
+					err = exe.Run()
+					if err != nil {
+						log.Println(err)
+					}
 				}
 			}()
 		} else {
-			log.Println("Request: rejected ", name, "(403)")
+			log.Printf("Request: rejected /%s (403)", name)
 			w.WriteHeader(http.StatusForbidden)
 		}
 
 	} else {
-		log.Println("Request: rejected: ", name, "(404)")
+		log.Println("Request: rejected: /%s (404)", name)
 		w.WriteHeader(http.StatusNotFound)
 	}
 }
