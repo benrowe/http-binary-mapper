@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"os/exec"
 
 	"github.com/fsnotify/fsnotify"
@@ -11,6 +13,15 @@ import (
 )
 
 func main() {
+	file, err := os.OpenFile("output.log", os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	defer file.Close()
+	log.SetOutput(file)
+	log.Println("sdf")
+
 	loadConfig()
 	startServer()
 }
@@ -49,16 +60,16 @@ func loadConfig() {
 	}
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("Config file changed:", e.Name)
+		log.Println("Config file changed:", e.Name)
 		viper.Unmarshal(&config)
 	})
 	viper.Unmarshal(&config)
-	fmt.Println("Config: read")
+	log.Println("Config: read")
 }
 
 func startServer() {
 	port := viper.GetInt32("config.http.port")
-	fmt.Println("Server: booting on port", port)
+	log.Println("Server: booting on port", port)
 
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/{slug}", handleMap).Methods("GET")
@@ -76,7 +87,7 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	name := params["slug"]
 
-	fmt.Println("Request: handling: ", name)
+	log.Println("Request: handling: ", name)
 	m := findMap(name, config.Maps)
 	if len(m.ID) > 0 {
 		token, ok := r.URL.Query()["token"]
@@ -84,19 +95,19 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 			go func() {
 				// call binaries
 				for _, bin := range m.Binaries {
-					fmt.Println(bin.Name)
+					log.Println(bin.Name)
 					exe := exec.Command(bin.Handler)
 					err := exe.Run()
-					fmt.Println(err)
+					log.Println(err)
 				}
 			}()
 		} else {
-			fmt.Println("Request: rejected ", name, "(403)")
+			log.Println("Request: rejected ", name, "(403)")
 			w.WriteHeader(http.StatusForbidden)
 		}
 
 	} else {
-		fmt.Println("Request: rejected: ", name, "(404)")
+		log.Println("Request: rejected: ", name, "(404)")
 		w.WriteHeader(http.StatusNotFound)
 	}
 }
