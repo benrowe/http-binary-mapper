@@ -36,4 +36,4 @@ build:
 
 ## execute the program from the source files
 run:
-	go run main.go
+	go run main.go -cfg config.yaml.sample
