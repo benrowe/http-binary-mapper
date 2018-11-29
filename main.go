@@ -78,17 +78,26 @@ func (m Map) isValid(token string) bool {
 
 func (b Bin) buildCommand(request *http.Request) (string, error) {
 	base := b.Handler
-	var data map[string]string
-	for key, value := range b.Request {
+	data := extractDataFromRequest(b.Request, request)
+
+	fmt.Println("data", data)
+	// search within the base string, find any markers
+	return base, nil
+}
+
+func extractDataFromRequest(mapping map[string]string, r *http.Request) map[string]string {
+	var data = make(map[string]string)
+	for key, value := range mapping {
 		s := strings.Split(key, ":")
 		rType, keyName := strings.ToLower(s[0]), s[1]
 		if rType == "get" {
-			data[keyName] = request.URL.Query()[value][0]
+			val := r.URL.Query()[keyName]
+			if len(val) > 0 {
+				data[value] = val[0]
+			}
 		}
 	}
-	fmt.Println(data)
-	// search within the base string, find any markers
-	return base, nil
+	return data
 }
 
 var config Config
