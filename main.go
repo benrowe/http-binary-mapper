@@ -19,20 +19,29 @@ var port *int
 var outputFile *string
 var configFile *string
 
-func main() {
+func prepareFlags() {
 	port = flag.Int("port", 8000, "port to run http service on")
 	outputFile = flag.String("output", "output.log", "file to log output to")
 	configFile = flag.String("cfg", "mappings.yaml", "config file")
 	flag.Parse()
+}
 
-	file, err := os.OpenFile(*outputFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
+func prepareLogger(output string) {
+	file, err := os.OpenFile(output, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		panic(err)
 	}
 
 	defer file.Close()
+	// send log to file and stdout
 	mw := io.MultiWriter(os.Stdout, file)
 	log.SetOutput(mw)
+}
+
+func main() {
+
+	prepareFlags()
+	prepareLogger(*outputFile)
 
 	loadConfig()
 	startServer()
