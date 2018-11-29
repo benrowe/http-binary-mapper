@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/gorilla/mux"
@@ -68,10 +69,26 @@ type Map struct {
 type Bin struct {
 	Name    string
 	Handler string
+	Request map[string]string
 }
 
 func (m Map) isValid(token string) bool {
 	return m.Token == token
+}
+
+func (b Bin) buildCommand(request *http.Request) (string, error) {
+	base := b.Handler
+	var data map[string]string
+	for key, value := range b.Request {
+		s := strings.Split(key, ":")
+		rType, keyName := strings.ToLower(s[0]), s[1]
+		if rType == "get" {
+			data[keyName] = request.URL.Query()[value][0]
+		}
+	}
+	fmt.Println(data)
+	// search within the base string, find any markers
+	return base, nil
 }
 
 var config Config
