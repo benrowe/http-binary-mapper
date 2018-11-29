@@ -18,5 +18,9 @@ _Feature coming soon_
 ## Todo
 
 - handle concurrent bin execution
+- add flags for
+    - port
+    - output file
 - map request to bin args
+    - a string is mapped
 - handle output

@@ -1,18 +1,23 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/gorilla/mux"
 	"github.com/spf13/viper"
 )
 
+var port int
+
 func main() {
+	port := flag.Int("port", 8000, "port to run http service on")
 	file, err := os.OpenFile("output.log", os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		panic(err)
@@ -68,7 +73,6 @@ func loadConfig() {
 }
 
 func startServer() {
-	port := viper.GetInt32("config.http.port")
 	log.Println("Server: booting on port", port)
 
 	rtr := mux.NewRouter()
@@ -76,9 +80,9 @@ func startServer() {
 
 	http.Handle("/", rtr)
 
-	portString := ":" + viper.GetString("config.http.port")
+	portString := ":" + strconv.Itoa(port)
 
-	if err := http.ListenAndServe(portString, nil); err != nil {
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		panic(err)
 	}
 }
