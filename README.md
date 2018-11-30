@@ -17,7 +17,7 @@ _Feature coming soon_
 
 ## Todo
 
-- [ ] handle concurrent bin execution
+- [x] handle concurrent bin execution
 - [ ] add flags for
     - [x] port
     - [x] output file

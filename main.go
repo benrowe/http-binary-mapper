@@ -152,10 +152,12 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 						log.Println("cant build command")
 					}
 					exe := exec.Command(cmd)
-					err = exe.Run()
-					if err != nil {
-						log.Println(err)
-					}
+					go func() {
+						err = exe.Run()
+						if err != nil {
+							log.Println(err)
+						}
+					}()
 				}
 			}()
 		} else {
