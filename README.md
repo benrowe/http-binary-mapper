@@ -17,10 +17,10 @@ _Feature coming soon_
 
 ## Todo
 
-- handle concurrent bin execution
-- add flags for
-    - port
-    - output file
-- map request to bin args
-    - a string is mapped
-- handle output
+- [ ] handle concurrent bin execution
+- [ ] add flags for
+    - [x] port
+    - [x] output file
+- [x] map request to bin args
+    - [ ] a string is mapped
+- [x] handle output
