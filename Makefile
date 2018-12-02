@@ -35,8 +35,8 @@ build:
 	go build -o proxy
 
 ## execute the program from the source files
-run:
-	go run main.go -cfg=config.example.yaml
+run: build
+	./proxy -cfg=config.example.yaml
 
 test:
 	go test
