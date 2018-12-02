@@ -26,7 +26,7 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 ## setup the project for exection
-init:	
+init:
 	go get ./...
 
 ## generate the binary
@@ -37,8 +37,10 @@ build: init
 run: build
 	./proxy -cfg=config.example.yaml
 
+## Run the unit tests
 test: init
 	go test
 
+## Run the coverage report and output it as html
 coverage: init
 	go test -cover -coverprofile=c.out && go tool cover -html=c.out -o coverage.html
