@@ -36,7 +36,7 @@ build:
 
 ## execute the program from the source files
 run:
-	gin run main.go --buildArgs "-cfg=config.example.yaml"
+	go run main.go -cfg=config.example.yaml
 
 test:
 	go test
