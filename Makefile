@@ -36,4 +36,10 @@ build:
 
 ## execute the program from the source files
 run:
-	go run main.go -cfg=config.example.yaml
+	gin run main.go --buildArgs "-cfg=config.example.yaml"
+
+test:
+	go test
+
+coverage:
+	go test -cover -coverprofile=c.out && go tool cover -html=c.out -o coverage.html
