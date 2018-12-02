@@ -17,15 +17,16 @@ func TestParse(t *testing.T) {
 		{"path {--flag}", map[string]string{"flag": "someval"}, "path --flag"},
 		{"path { --flag  }", map[string]string{"flag": "someval"}, "path --flag"},
 		{"path {--flag=}", map[string]string{"flag": "someval"}, "path --flag=someval"},
+		{"path {--flag=default}", map[string]string{}, "path --flag=default"},
 		{"path {flag}", map[string]string{"flag": "someval"}, "path someval"},
 		{"path {flag} | pipe {to}", map[string]string{"flag": "someval"}, "path someval | pipe"},
 		{"path {flag} | pipe {to}", map[string]string{"flag": "someval", "to": "another"}, "path someval | pipe another"},
 		{"path {flag} | pipe {to=hi}", map[string]string{"flag": "someval"}, "path someval | pipe hi"},
 	}
 
-	for _, test := range tests {
+	for i, test := range tests {
 		if output := Parse(test.pattern, test.args); output != test.expected {
-			t.Error("Test failed: {} inputted, {} expected, received {}", test.pattern, test.expected, output)
+			t.Errorf("%d: Test failed: '%s' inputted, '%s' expected, received '%s'", i, test.pattern, test.expected, output)
 		}
 	}
 }
