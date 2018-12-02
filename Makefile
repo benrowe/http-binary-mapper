@@ -33,6 +33,10 @@ init:
 build: init
 	go build -o proxy
 
+## generate the binary
+build-nix:
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o proxy .
+
 ## execute the program from the source files
 run: build
 	./proxy -cfg=config.example.yaml
@@ -44,3 +48,11 @@ test: init
 ## Run the coverage report and output it as html
 coverage: init
 	go test -cover -coverprofile=c.out && go tool cover -html=c.out -o coverage.html
+
+## Build the docker image and tag it as "benrowe/http-binary-mapper"
+docker-build:
+	docker build -t benrowe/http-binary-mapper:latest .
+
+## Run the service through docker
+docker-run: build-nix docker-build
+	docker run --rm -it -v "${PWD}:/data" benrowe/http-binary-mapper:latest
