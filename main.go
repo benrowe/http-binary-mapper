@@ -123,7 +123,7 @@ func startServer() {
 	log.Println("Server: booting on port", strconv.Itoa(*port))
 
 	rtr := mux.NewRouter()
-	rtr.HandleFunc("/{slug}", handleMap).Methods("GET")
+	rtr.HandleFunc("/{slug}", handleMap).Methods("GET", "POST")
 
 	http.Handle("/", rtr)
 
