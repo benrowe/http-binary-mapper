@@ -9,7 +9,8 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
-	"strings"
+
+	"github.com/benrowe/http-binary-mapper/cli-builder"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/gorilla/mux"
@@ -80,24 +81,7 @@ func (b Bin) buildCommand(request *http.Request) (string, error) {
 	base := b.Handler
 	data := extractDataFromRequest(b.Request, request)
 
-	fmt.Println("data", data)
-	// search within the base string, find any markers
-	return base, nil
-}
-
-func extractDataFromRequest(mapping map[string]string, r *http.Request) map[string]string {
-	var data = make(map[string]string)
-	for key, value := range mapping {
-		s := strings.Split(key, ":")
-		rType, keyName := strings.ToLower(s[0]), s[1]
-		if rType == "get" {
-			val := r.URL.Query()[keyName]
-			if len(val) > 0 {
-				data[value] = val[0]
-			}
-		}
-	}
-	return data
+	return clibuilder.Parse(base, data), nil
 }
 
 var config Config
@@ -151,6 +135,7 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 					if err != nil {
 						log.Println("cant build command")
 					}
+					log.Printf("Request: /%s: Executing: %s\n", name, cmd)
 					exe := exec.Command(cmd)
 					go func() {
 						err = exe.Run()
@@ -161,12 +146,12 @@ func handleMap(w http.ResponseWriter, r *http.Request) {
 				}
 			}()
 		} else {
-			log.Printf("Request: rejected /%s (403)", name)
+			log.Printf("Request: rejected /%s (403)\n", name)
 			w.WriteHeader(http.StatusForbidden)
 		}
 
 	} else {
-		log.Println("Request: rejected: /%s (404)", name)
+		log.Printf("Request: rejected: /%s (404)\n", name)
 		w.WriteHeader(http.StatusNotFound)
 	}
 }
