@@ -11,6 +11,10 @@ This package was specifically designed for creating webhook callbacks from servi
 3. Edit the file. You will need to setup your unique url endpoint (maps.id, security token, and list of binaries to run)
 4. Run the application
 
-### Docker
+## Docker
 
 _Feature coming soon_
+
+## TODO
+
+- [ ] validate build
