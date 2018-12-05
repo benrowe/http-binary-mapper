@@ -28,10 +28,10 @@ help:
 ## setup the project for exection
 init:
 	cp config.example.yaml mappings.yaml
-	go get ./...
 
 ## generate the binary
 build:
+	go get ./...
 	go build -o proxy
 
 ## execute the program from the source files
