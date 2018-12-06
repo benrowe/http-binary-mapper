@@ -31,11 +31,11 @@ init:
 
 ## generate the binary
 build: init
-	go build -o proxy
+	go build -o bin/proxy
 
 ## generate the binary
 build-nix:
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o proxy .
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/proxy .
 
 ## execute the program from the source files
 run: build
