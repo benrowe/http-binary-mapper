@@ -23,7 +23,7 @@ var configFile *string
 var file *os.File
 
 func prepareFlags() {
-	port = flag.Int("port", 8000, "port to run http service on")
+	port = flag.Int("port", 80, "port to run http service on")
 	outputFile = flag.String("output", "output.log", "file to log output to")
 	configFile = flag.String("cfg", "mappings.yaml", "config file")
 	flag.Parse()
