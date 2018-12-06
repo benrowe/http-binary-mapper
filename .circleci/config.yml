@@ -3,12 +3,12 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.11
-    working_directory: /go/src/github.com/benrowe/reverse-proxy-binary-mapper
-    environment: # environment variables for the build itself
-      TEST_RESULTS: /tmp/test-results # path to where test results will be saved
-    steps: # steps that comprise the `build` job
-      - checkout # check out source code to working directory
-      - restore_cache: # restores saved cache if no changes are detected since last run
+    working_directory: /go/src/github.com/benrowe/http-binary-mapper
+    environment:
+      TEST_RESULTS: /tmp/test-results
+    steps:
+      - checkout
+      - restore_cache:
           keys:
             - v1-pkg-cache
       - run:
