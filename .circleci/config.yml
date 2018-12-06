@@ -35,9 +35,9 @@ jobs:
       - run:
           name: Build the image
           command: |
-            docker build
-            -t $DOCKER_HUB_USER_ID/http-binary-mapper:$CIRCLE_SHA1
-            -t $DOCKER_HUB_USER_ID/http-binary-mapper:latest
+            docker build \
+            -t $DOCKER_HUB_USER_ID/http-binary-mapper:$CIRCLE_SHA1 \
+            -t $DOCKER_HUB_USER_ID/http-binary-mapper:latest \
             .
       - deploy:
           name: Publish application to docker hub
