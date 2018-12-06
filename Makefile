@@ -55,4 +55,4 @@ docker-build:
 
 ## Run the service through docker
 docker-run: docker-build
-	docker run --rm -it -v "${PWD}:/src/data" -p 8000:8000 benrowe/http-binary-mapper:latest
+	docker run --rm -it -v "${PWD}:/src/data" -p 8000:80 benrowe/http-binary-mapper:latest

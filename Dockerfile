@@ -2,7 +2,7 @@ FROM alpine:latest
 
 MAINTAINER Ben Rowe <ben.rowe.83@gmail.com>
 
-EXPOSE 8000
+EXPOSE 80
 
 RUN mkdir /src
 WORKDIR /src
