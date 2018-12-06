@@ -26,20 +26,19 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 ## setup the project for exection
-init:
-	cp config.example.yaml mappings.yaml
+init:	
+	go get ./...
 
 ## generate the binary
-build:
-	go get ./...
+build: init
 	go build -o proxy
 
 ## execute the program from the source files
 run: build
 	./proxy -cfg=config.example.yaml
 
-test:
+test: init
 	go test
 
-coverage:
+coverage: init
 	go test -cover -coverprofile=c.out && go tool cover -html=c.out -o coverage.html
