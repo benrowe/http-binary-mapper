@@ -9,7 +9,7 @@ WORKDIR /src
 
 VOLUME /src/data
 
-COPY proxy /src/proxy
+COPY bin/proxy /src/proxy
 
 RUN chmod +x /src/proxy
 

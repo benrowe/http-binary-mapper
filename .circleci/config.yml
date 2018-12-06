@@ -23,7 +23,7 @@ jobs:
       - persist_to_workspace:
           root: /go/src/github.com/benrowe/http-binary-mapper
           paths:
-            - bin
+            - .
   docker:
     docker:
       - image: docker:17.05.0-ce-git
