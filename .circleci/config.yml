@@ -15,7 +15,7 @@ jobs:
           name: Run unit tests
           command: make test
       - run: make build
-      - run: "[[ -x ./proxy ]]"
+      - run: "[[ -x ./bin/proxy ]]"
       - save_cache:
           key: v1-pkg-cache
           paths:
