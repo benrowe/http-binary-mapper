@@ -35,7 +35,7 @@ build: init
 
 ## generate the binary
 build-nix:
-	CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o bin/proxy .
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/proxy .
 
 ## execute the program from the source files
 run: build
